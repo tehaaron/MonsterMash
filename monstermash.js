@@ -1,9 +1,19 @@
 //Current issues:
 //totalHealth is overwrittn on the monster during combat. Need to refill hp after combat ends
 
+//Basic console test:
+//init(2);
+//combat(players[0],players[1]);
+//or
+//drawPart("full");
+//var godzilla = new Monster("Godzilla", inventory[0], inventory[1], inventory[2], inventory[3], inventory[4], inventory[5]);
+//make another
+//combat(godzilla,othermonster);
+//wooooooo
 
-var inventory = [];
-var players = [];
+
+var inventory = []; //body parts are automatically stored here if you use drawPart()
+var players = []; //full monsters are stored here if you use init()
 
 var rarities = ["common","rare","epic"];
 
@@ -12,14 +22,15 @@ var strength;
 var speed;
 var smarts;
 
-var init = function(monsterSlots) {
+//init() is mostly just for quickly creating full monsters and testing combat()
+var init = function(monsterSlots) { //create x number of full Monsters
 	for (var i = 0, max = monsterSlots; i < max; i += 1) {
 		players[i] = new Monster("Player"+i,new Head(),new Torso(),new Arm(),new Arm(),new Leg(),new Leg());
 	}
 	return players;
 };
 
-var Monster = function(name, head, torso, arm1, arm2, leg1, leg2) {
+var Monster = function(name, head, torso, arm1, arm2, leg1, leg2) { //make a monster shell from stuff in the inventory array or just a shell
 
 	this.name = name;
 	this.head = head;
@@ -116,11 +127,11 @@ var Leg = function() {
 
 };
 
-var combat = function(monster1, monster2) {
+var combat = function(monster1, monster2) { //fight 2 monsters, likely wont work unless they have all body parts filled but havent tested
 
 	console.log("Starting HP-> Monster 1: "+monster1.totalHealth+", Monster 2: "+monster2.totalHealth);
 	while (monster1.totalHealth > 0 && monster2.totalHealth > 0) {
-		if (monster1.totalSpeed > monster2.totalSpeed) {
+		if (monster1.totalSpeed > monster2.totalSpeed) { //speed determines who goes first..something like 90% of the time the faster one wins atm
 			monster2.totalHealth -= monster1.totalStrength;
 			console.log("Monster 1 is quicker");
 			if (monster2.totalHealth > 0) {
@@ -139,7 +150,7 @@ var combat = function(monster1, monster2) {
 
 };
 
-var drawPart = function(type) {
+var drawPart = function(type) { //create a body part and push it to the inventory array...also yay switches
 
 	switch(type) {
 		case "head":
