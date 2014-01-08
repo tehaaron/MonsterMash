@@ -1,5 +1,5 @@
 //Current issues:
-//totalHealth is overwrittn on the monster during combat. Need to refill hp after combat ends
+//
 
 //Basic console test:
 //init(2);
@@ -147,7 +147,9 @@ var combat = function(monster1, monster2) { //fight 2 monsters, likely wont work
 	}
 
 	return("Result-> Monster1 HP: "+monster1.totalHealth+", Monster2 HP: "+monster2.totalHealth);
-
+	//reset monster's hp
+	monster1.totalHealth = monster1torso.health + monster1arm1.health + monster1arm2.health + monster1leg1.health + monster1leg2.health;
+	monster2.totalHealth = monster2.torso.health + monster2.arm1.health + monster2.arm2.health + monster2.leg1.health + monster2.leg2.health;
 };
 
 var drawPart = function(type) { //create a body part and push it to the inventory array...also yay switches
