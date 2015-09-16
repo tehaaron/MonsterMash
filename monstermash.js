@@ -15,7 +15,7 @@
 var inventory = []; //body parts are automatically stored here if you use drawPart()
 var players = []; //full monsters are stored here if you use init()
 
-var rarities = ["common","rare","epic"];
+var rarities = ["common", "rare", "epic"];
 
 var health;
 var strength;
@@ -23,14 +23,14 @@ var speed;
 var smarts;
 
 //init() is mostly just for quickly creating full monsters and testing combat()
-var init = function(monsterSlots) { //create x number of full Monsters
+var init = function (monsterSlots) { //create x number of full Monsters
 	for (var i = 0, max = monsterSlots; i < max; i += 1) {
 		players[i] = new Monster("Player"+i,new Head(),new Torso(),new Arm(),new Arm(),new Leg(),new Leg());
 	}
 	return players;
 };
 
-var Monster = function(name, head, torso, arm1, arm2, leg1, leg2) { //make a monster shell from stuff in the inventory array or just a shell
+var Monster = function (name, head, torso, arm1, arm2, leg1, leg2) { //make a monster shell from stuff in the inventory array or just a shell
 
 	this.name = name;
 	this.head = head;
@@ -47,7 +47,7 @@ var Monster = function(name, head, torso, arm1, arm2, leg1, leg2) { //make a mon
 	}
 };
 
-var Head = function() {
+var Head = function () {
 	this.type = "head";
     this.rarity = Math.floor(Math.random()*rarities.length);
 	
@@ -64,7 +64,7 @@ var Head = function() {
 
 };
 
-var Torso = function() {
+var Torso = function () {
 	this.type = "torso";
     this.rarity = Math.floor(Math.random()*rarities.length);
 	
@@ -87,7 +87,7 @@ var Torso = function() {
 
 };
 
-var Arm = function() {
+var Arm = function () {
 	this.type = "arm";
     this.rarity = Math.floor(Math.random()*rarities.length);
 	
@@ -107,7 +107,7 @@ var Arm = function() {
 
 };
 
-var Leg = function() {
+var Leg = function () {
 	this.type = "leg";
     this.rarity = Math.floor(Math.random()*rarities.length);
 	
@@ -127,32 +127,31 @@ var Leg = function() {
 
 };
 
-var combat = function(monster1, monster2) { //fight 2 monsters, likely wont work unless they have all body parts filled but havent tested
+var combat = function (monster1, monster2) { //fight 2 monsters, likely wont work unless they have all body parts filled but havent tested
 
 	console.log("Starting HP-> Monster 1: "+monster1.totalHealth+", Monster 2: "+monster2.totalHealth);
-	while (monster1.totalHealth > 0 && monster2.totalHealth > 0) {
+	var ongoingHealth1 = monster1.totalHealth;
+	var ongoingHealth2 = monster2.totalHealth;
+
+	while (ongoingHealth1 > 0 && ongoingHealth2 > 0) {
 		if (monster1.totalSpeed > monster2.totalSpeed) { //speed determines who goes first..something like 90% of the time the faster one wins atm
-			monster2.totalHealth -= monster1.totalStrength;
+			ongoingHealth2 -= monster1.totalStrength;
 			console.log("Monster 1 is quicker");
-			if (monster2.totalHealth > 0) {
-				monster1.totalHealth -= monster2.totalStrength;
+			if (ongoingHealth2 > 0) {
+				ongoingHealth1 -= monster2.totalStrength;
 			}
 		} else {
-			monster1.totalHealth -= monster2.totalStrength;
+			ongoingHealth1 -= monster2.totalStrength;
 			console.log("Monster 2 is quicker");
-			if (monster1.totalHealth > 0) {
-				monster2.totalHealth -= monster1.totalStrength;
+			if (ongoingHealth1 > 0) {
+				ongoingHealth2 -= monster1.totalStrength;
 			}
-		}
+		}	
 	}
-
-	return("Result-> Monster1 HP: "+monster1.totalHealth+", Monster2 HP: "+monster2.totalHealth);
-	//reset monster's hp
-	monster1.totalHealth = monster1torso.health + monster1arm1.health + monster1arm2.health + monster1leg1.health + monster1leg2.health;
-	monster2.totalHealth = monster2.torso.health + monster2.arm1.health + monster2.arm2.health + monster2.leg1.health + monster2.leg2.health;
+	return("Result-> Monster1 HP: "+ongoingHealth1+", Monster2 HP: "+ongoingHealth2);
 };
 
-var drawPart = function(type) { //create a body part and push it to the inventory array...also yay switches
+var drawPart = function (type) { //create a body part and push it to the inventory array...also yay switches
 
 	switch(type) {
 		case "head":
